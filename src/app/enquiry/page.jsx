@@ -2,9 +2,12 @@
 "use client";
 
 import { useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 export default function EnquiryPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const [form, setForm] = useState({
     name: "",
@@ -20,60 +23,68 @@ export default function EnquiryPage() {
     whatsappConsent: false,
   });
 
-  function handleChange(
-    event: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) {
-    const { name, value, type } = event.target;
+  function handleChange(event) {
+    const { name, value, type, checked } = event.target;
 
     setForm((previous) => ({
       ...previous,
-      [name]:
-        type === "checkbox"
-          ? (event.target as HTMLInputElement).checked
-          : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   }
 
- function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-  event.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault();
 
-  if (!form.privacyConsent) {
-    alert("Please accept the privacy consent to continue.");
-    return;
+    if (!form.privacyConsent) {
+      alert("Please accept the privacy consent to continue.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError("");
+
+    const { error } = await supabase.from("enquiries").insert([
+      {
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        destination: form.destination,
+        start_date: form.startDate || null,
+        travellers: form.travellers,
+        nights: form.nights,
+        budget: form.budget,
+        message: form.message,
+        privacy_consent: form.privacyConsent,
+        whatsapp_consent: form.whatsappConsent,
+      },
+    ]);
+
+    setIsSubmitting(false);
+
+    if (error) {
+      console.error("Enquiry submission error:", error);
+      setError("Something went wrong. Please try again.");
+      return;
+    }
+
+    setSubmitted(true);
   }
-
-  const existingEnquiries = JSON.parse(
-    localStorage.getItem("travelmate-enquiries") || "[]"
-  );
-
-  const newEnquiry = {
-    ...form,
-    id: Date.now().toString(),
-    createdAt: new Date().toLocaleString(),
-  };
-
-  localStorage.setItem(
-    "travelmate-enquiries",
-    JSON.stringify([...existingEnquiries, newEnquiry])
-  );
-
-  setSubmitted(true);
-}
 
   if (submitted) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#101b16] px-6 text-center text-[#f5f0e6]">
         <div className="max-w-lg rounded-3xl border border-white/10 bg-[#19271f] p-10">
           <p className="text-4xl text-[#d5ae70]">✓</p>
+
           <h1 className="mt-5 text-3xl font-semibold">
             Enquiry Submitted!
           </h1>
+
           <p className="mt-4 leading-7 text-gray-300">
             Thank you for sharing your travel plans. Our team will review
             your request.
           </p>
+
           <a
             href="/"
             className="mt-8 inline-block rounded-full bg-[#c69b59] px-8 py-3 font-semibold text-[#101b16]"
@@ -91,6 +102,7 @@ export default function EnquiryPage() {
         <a href="/" className="text-2xl font-bold tracking-wider">
           TRAVEL<span className="text-[#c69b59]">MATE.</span>
         </a>
+
         <a href="/" className="text-sm text-gray-300 hover:text-[#d5ae70]">
           ← Back to Home
         </a>
@@ -219,16 +231,24 @@ export default function EnquiryPage() {
                 >
                   <option value="">Select your budget</option>
                   <option value="Below ₹50,000">Below ₹50,000</option>
-                  <option value="₹50,000 – ₹1,00,000">₹50,000 – ₹1,00,000</option>
-                  <option value="₹1,00,000 – ₹1,50,000">₹1,00,000 – ₹1,50,000</option>
-                  <option value="Above ₹1,50,000">Above ₹1,50,000</option>
+                  <option value="₹50,000 – ₹1,00,000">
+                    ₹50,000 – ₹1,00,000
+                  </option>
+                  <option value="₹1,00,000 – ₹1,50,000">
+                    ₹1,00,000 – ₹1,50,000
+                  </option>
+                  <option value="Above ₹1,50,000">
+                    Above ₹1,50,000
+                  </option>
                 </select>
               </Field>
             </div>
           </div>
 
           <div className="border-t border-white/10 pt-8">
-            <h2 className="text-xl font-semibold">Additional Requirements</h2>
+            <h2 className="text-xl font-semibold">
+              Additional Requirements
+            </h2>
 
             <textarea
               name="message"
@@ -250,6 +270,7 @@ export default function EnquiryPage() {
                 onChange={handleChange}
                 className="mt-1 accent-[#c69b59]"
               />
+
               <span>
                 I agree to the collection and use of my information for
                 handling this travel enquiry.
@@ -264,6 +285,7 @@ export default function EnquiryPage() {
                 onChange={handleChange}
                 className="mt-1 accent-[#c69b59]"
               />
+
               <span>
                 I agree to receive follow-up communication through WhatsApp.
                 (Optional)
@@ -271,11 +293,16 @@ export default function EnquiryPage() {
             </label>
           </div>
 
+          {error && (
+            <p className="text-sm text-red-400">{error}</p>
+          )}
+
           <button
             type="submit"
-            className="w-full rounded-full bg-[#c69b59] px-8 py-4 font-semibold text-[#101b16] transition hover:bg-[#d5ae70]"
+            disabled={isSubmitting}
+            className="w-full rounded-full bg-[#c69b59] px-8 py-4 font-semibold text-[#101b16] transition hover:bg-[#d5ae70] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Submit Enquiry →
+            {isSubmitting ? "Submitting..." : "Submit Enquiry →"}
           </button>
         </form>
       </section>
@@ -286,13 +313,7 @@ export default function EnquiryPage() {
 const inputStyle =
   "w-full rounded-xl border border-white/10 bg-[#101b16] px-4 py-3.5 text-base text-white outline-none placeholder:text-gray-500 focus:border-[#c69b59]";
 
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+function Field({ label, children }) {
   return (
     <label className="block space-y-2">
       <span className="text-sm text-gray-300">{label}</span>

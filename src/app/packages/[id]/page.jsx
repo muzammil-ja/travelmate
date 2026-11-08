@@ -43,20 +43,14 @@ const packages = {
   },
 };
 
-type PackageId = keyof typeof packages;
-
-export default async function PackageDetails({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function PackageDetails({ params }) {
   const { id } = await params;
 
   if (!Object.prototype.hasOwnProperty.call(packages, id)) {
     notFound();
   }
 
-  const tour = packages[id as PackageId];
+  const tour = packages[id];
 
   return (
     <main className="min-h-screen bg-[#101b16] text-[#f5f0e6]">
@@ -65,7 +59,8 @@ export default async function PackageDetails({
           TRAVEL<span className="text-[#c69b59]">MATE.</span>
         </a>
 
-        <a href="/"
+        <a
+          href="/"
           className="rounded-full border border-white/20 px-5 py-2 text-sm text-gray-300 hover:border-[#c69b59]"
         >
           ← Back to Home

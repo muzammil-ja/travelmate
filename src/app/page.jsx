@@ -96,10 +96,7 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section
-        id="about"
-        className="mx-auto max-w-7xl px-8 py-20"
-      >
+      <section id="about" className="mx-auto max-w-7xl px-8 py-20">
         <p className="text-sm font-semibold tracking-[0.25em] text-[#c69b59]">
           TRAVEL WITH PURPOSE
         </p>
@@ -115,10 +112,7 @@ export default function Home() {
       </section>
 
       {/* Packages Section */}
-      <section
-        id="packages"
-        className="mx-auto max-w-7xl px-8 pb-20"
-      >
+      <section id="packages" className="mx-auto max-w-7xl px-8 pb-20">
         <div className="mb-10">
           <p className="text-sm font-semibold tracking-[0.25em] text-[#c69b59]">
             HANDPICKED EXPERIENCES
@@ -150,9 +144,7 @@ export default function Home() {
               <div className="p-7">
                 <p className="text-sm text-[#c69b59]">{item.id}</p>
 
-                <h3 className="mt-3 text-2xl font-semibold">
-                  {item.name}
-                </h3>
+                <h3 className="mt-3 text-2xl font-semibold">{item.name}</h3>
 
                 <p className="mt-2 text-base text-gray-400">
                   {item.location}
@@ -168,11 +160,9 @@ export default function Home() {
                     <p className="text-sm text-gray-400">
                       Peak season · Oct–Mar
                     </p>
-
                     <p className="mt-2 text-2xl font-semibold text-[#d5ae70]">
                       {item.peakPrice}
                     </p>
-
                     <p className="text-sm text-gray-400">Per person</p>
                   </div>
                 </div>
@@ -183,9 +173,7 @@ export default function Home() {
                     <span className="font-semibold text-[#d5ae70]">
                       {item.monsoonPrice}
                     </span>
-                    <span className="text-sm text-gray-400">
-                      {" "}/ person
-                    </span>
+                    <span className="text-sm text-gray-400"> / person</span>
                   </p>
                 )}
 
