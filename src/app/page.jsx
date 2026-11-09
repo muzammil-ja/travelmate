@@ -28,21 +28,35 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#101b16] text-[#f5f0e6]">
       {/* Navbar */}
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-8 py-6">
+      <nav className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-5 px-6 py-6 md:px-8">
         <a href="/" className="text-2xl font-bold tracking-wider">
           TRAVEL<span className="text-[#c69b59]">MATE.</span>
         </a>
 
-        <div className="hidden gap-9 text-base text-gray-300 md:flex">
-          <a href="/">Home</a>
-          <a href="#packages">Packages</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
+        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-300 md:gap-7 md:text-base">
+          <a href="/" className="transition hover:text-[#d5ae70]">
+            Home
+          </a>
+          <a href="#packages" className="transition hover:text-[#d5ae70]">
+            Packages
+          </a>
+          <a href="#about" className="transition hover:text-[#d5ae70]">
+            About
+          </a>
+          <a href="/blogs" className="transition hover:text-[#d5ae70]">
+            Blogs
+          </a>
+          <a href="#contact" className="transition hover:text-[#d5ae70]">
+            Contact
+          </a>
+          <a href="/admin/login" className="transition hover:text-[#d5ae70]">
+            Admin
+          </a>
         </div>
 
         <a
           href="/enquiry"
-          className="rounded-full bg-[#c69b59] px-7 py-3 text-base font-semibold text-[#101b16]"
+          className="rounded-full bg-[#c69b59] px-6 py-3 text-sm font-semibold text-[#101b16] transition hover:bg-[#d5ae70] md:px-7 md:text-base"
         >
           Plan Your Trip
         </a>
@@ -58,7 +72,7 @@ export default function Home() {
           }}
         />
 
-        <div className="relative mx-auto flex min-h-[560px] max-w-7xl items-center px-10 py-20 md:px-16">
+        <div className="relative mx-auto flex min-h-[560px] max-w-7xl items-center px-6 py-20 md:px-16">
           <div className="max-w-2xl">
             <p className="mb-6 text-sm font-semibold tracking-[0.3em] text-[#d5ae70]">
               DISCOVER INDIA · TRAVEL DIFFERENTLY
@@ -79,14 +93,14 @@ export default function Home() {
             <div className="mt-9 flex flex-wrap gap-4">
               <a
                 href="#packages"
-                className="rounded-full bg-[#c69b59] px-8 py-4 text-base font-semibold text-[#101b16]"
+                className="rounded-full bg-[#c69b59] px-8 py-4 text-base font-semibold text-[#101b16] transition hover:bg-[#d5ae70]"
               >
                 Explore Packages →
               </a>
 
               <a
                 href="/enquiry"
-                className="rounded-full border border-white/50 px-8 py-4 text-base"
+                className="rounded-full border border-white/50 px-8 py-4 text-base transition hover:bg-white/10"
               >
                 Contact Us
               </a>
@@ -96,7 +110,10 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="mx-auto max-w-7xl px-8 py-20">
+      <section
+        id="about"
+        className="mx-auto max-w-7xl px-6 py-20 md:px-8"
+      >
         <p className="text-sm font-semibold tracking-[0.25em] text-[#c69b59]">
           TRAVEL WITH PURPOSE
         </p>
@@ -112,7 +129,10 @@ export default function Home() {
       </section>
 
       {/* Packages Section */}
-      <section id="packages" className="mx-auto max-w-7xl px-8 pb-20">
+      <section
+        id="packages"
+        className="mx-auto max-w-7xl px-6 pb-20 md:px-8"
+      >
         <div className="mb-10">
           <p className="text-sm font-semibold tracking-[0.25em] text-[#c69b59]">
             HANDPICKED EXPERIENCES
@@ -144,7 +164,9 @@ export default function Home() {
               <div className="p-7">
                 <p className="text-sm text-[#c69b59]">{item.id}</p>
 
-                <h3 className="mt-3 text-2xl font-semibold">{item.name}</h3>
+                <h3 className="mt-3 text-2xl font-semibold">
+                  {item.name}
+                </h3>
 
                 <p className="mt-2 text-base text-gray-400">
                   {item.location}
@@ -173,7 +195,9 @@ export default function Home() {
                     <span className="font-semibold text-[#d5ae70]">
                       {item.monsoonPrice}
                     </span>
-                    <span className="text-sm text-gray-400"> / person</span>
+                    <span className="text-sm text-gray-400">
+                      {" "} / person
+                    </span>
                   </p>
                 )}
 
@@ -192,7 +216,7 @@ export default function Home() {
       {/* Contact Section */}
       <section
         id="contact"
-        className="mx-4 mb-8 rounded-3xl bg-[#263b2e] px-8 py-16 text-center"
+        className="mx-4 mb-8 rounded-3xl bg-[#263b2e] px-6 py-16 text-center md:px-8"
       >
         <p className="text-sm tracking-[0.25em] text-[#d5ae70]">
           YOUR NEXT JOURNEY STARTS HERE
@@ -204,14 +228,26 @@ export default function Home() {
 
         <a
           href="/enquiry"
-          className="mt-7 inline-block rounded-full bg-[#c69b59] px-8 py-4 text-base font-semibold text-[#101b16]"
+          className="mt-7 inline-block rounded-full bg-[#c69b59] px-8 py-4 text-base font-semibold text-[#101b16] transition hover:bg-[#d5ae70]"
         >
           Send an Enquiry →
         </a>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/10 px-8 py-8 text-center text-sm text-gray-400">
+      <footer className="border-t border-white/10 px-6 py-8 text-center text-sm text-gray-400">
+        <div className="mb-4 flex flex-wrap justify-center gap-6">
+          <a href="/blogs" className="transition hover:text-[#d5ae70]">
+            Blogs
+          </a>
+          <a href="/admin/login" className="transition hover:text-[#d5ae70]">
+            Admin Login
+          </a>
+          <a href="/enquiry" className="transition hover:text-[#d5ae70]">
+            Enquiry
+          </a>
+        </div>
+
         © 2026 TravelMate. All rights reserved.
       </footer>
     </main>
